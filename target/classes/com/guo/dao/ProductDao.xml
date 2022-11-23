@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guo.dao.ProductDao">
+    <!--增加产品-->
+    <insert id="insertProduct">
+        insert into ssm.product(name,rate,amount,raised,cycle,endTime)
+        values(#{name},#{rate},#{amount},#{raised},#{cycle},#{endTime})
+    </insert>
+
+    <!--根据id删除一个Product-->
+    <delete id="deleteProductById" parameterType="int">
+        delete from ssm.product
+        where id=#{id}
+    </delete>
+
+    <!--通过id查产品，用于更新产品-->
+    <select id="queryProductById" resultType="Product">
+        select * from ssm.product
+        where id =#{id}
+    </select>
+
+    <!--更新product-->
+    <update id="updateProduct" parameterType="Product">
+        update ssm.product
+        set name = #{name},rate = #{rate},amount = #{amount},raised = #{raised},cycle = #{cycle},endTime = #{endTime}
+        where id = #{id}
+    </update>
+
+    <!--获取总交易额-->
+    <select id="selectTurnover" resultType="double">
+        select SUM(raised)
+        from ssm.product
+        where endTime is not null and endTime &lt; #{date}
+    </select>
+
+    <!--查询所有产品-->
+    <select id="selectAllProducts" resultType="Product">
+        select id,name,rate,amount,raised,cycle,endTime
+        from ssm.product
+    </select>
+
+    <!--通过name查产品-->
+    <select id="selectProductsByName" resultType="Product">
+        select id,name,rate,amount,raised,cycle,endTime
+        from ssm.product
+        where name like '%' #{name} '%'
+    </select>
+</mapper>
+
+
+
+
